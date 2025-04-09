@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: rentaldb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQLDB_DATABASE}
+    ports:
+      - "${MYSQLDB_DOCKER_PORT}:${MYSQLDB_LOCAL_PORT}"
+
+  springboot-app:
+    build: .
+    container_name: rental-app
+    depends_on:
+      - mysql
+    restart: on-failure
+    ports:
+      - "${SPRING_DOCKER_PORT}:${SPRING_LOCAL_PORT}"
+      - "${DEBUG_PORT}:${DEBUG_PORT}"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://rentaldb:3306/${MYSQLDB_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
