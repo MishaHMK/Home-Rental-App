@@ -13,7 +13,7 @@ import rental.project.model.User;
 public interface UserMapper {
     User toUser(UserRegisterRequestDto dto);
 
-    UserDto toUserDto(User dto);
+    UserDto toUserDto(User user);
 
     UserRegisterResponseDto toResponse(User user);
 
