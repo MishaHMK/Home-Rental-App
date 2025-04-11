@@ -29,7 +29,7 @@ import rental.project.model.embedded.Address;
 public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
