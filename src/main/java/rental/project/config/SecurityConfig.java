@@ -6,6 +6,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,7 +21,7 @@ import rental.project.security.jwt.JwtAuthFilter;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
@@ -35,12 +36,12 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth -> auth
+                .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(
                                         antMatcher("/auth/**"),
                                         antMatcher("/swagger-ui/**"),
-                                        antMatcher("/v3/api-docs/**"))
+                                        antMatcher("/v3/api-docs/**"),
+                                        antMatcher(HttpMethod.GET, "/accommodations/**"))
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

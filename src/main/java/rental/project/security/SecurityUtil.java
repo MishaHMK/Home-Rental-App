@@ -12,4 +12,8 @@ public class SecurityUtil {
     public static User getLoggedInUser() {
         return ((User) getAuthentication().getPrincipal());
     }
+
+    public static Long getLoggedInUserId() {
+        return ((User) getAuthentication().getPrincipal()).getId();
+    }
 }

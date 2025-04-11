@@ -29,4 +29,14 @@ public interface AccommodationMapper {
     @Mapping(source = "addressDto", target = "address", qualifiedByName = "mapToAddress")
     void updateFromDto(UpdateAccommodationDto dto,
                        @MappingTarget Accommodation accommodation);
+
+    @Named("accommodationFromId")
+    default Accommodation accommodationFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Accommodation accommodation = new Accommodation();
+        accommodation.setId(id);
+        return accommodation;
+    }
 }

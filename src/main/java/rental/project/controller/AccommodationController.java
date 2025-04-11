@@ -32,13 +32,12 @@ public class AccommodationController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     @Operation(summary = "Create accommodations",
-            description = "Create new accommodations in system with provided data")
+            description = "Create new accommodation in system with provided data")
     public AccommodationDto createAccommodation(
             @RequestBody @Valid CreateAccommodationDto createAccommodationDto) {
         return accommodationService.save(createAccommodationDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping()
     @Operation(summary = "Get all accommodations",
             description = "Get all accommodations in system")
@@ -46,25 +45,24 @@ public class AccommodationController {
         return accommodationService.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get accommodation by id",
-            description = "Get accommodation from system by given idm")
+            description = "Get accommodation from system by given id")
     public AccommodationDto getAccommodationById(@PathVariable Long id) {
         return accommodationService.findByAccommodationId(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    @Operation(summary = "Get accommodation by id",
-            description = "Get accommodation from system by given idm")
+    @Operation(summary = "Update accommodation data",
+            description = "Update accommodation with five data")
     public AccommodationDto updateAccommodation(
              @PathVariable Long id,
              @Valid @RequestBody UpdateAccommodationDto updateDto) {
         return accommodationService.updateAccommodation(id, updateDto);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete accommodation",
