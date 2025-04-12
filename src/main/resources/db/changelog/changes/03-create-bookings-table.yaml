@@ -15,12 +15,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: checkin_date
-                  type: datetime
+                  type: date
                   constraints:
                     nullable: false
               - column:
                   name: checkout_date
-                  type: datetime
+                  type: date
                   constraints:
                     nullable: false
               - column:
