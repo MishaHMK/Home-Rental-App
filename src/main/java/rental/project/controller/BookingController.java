@@ -43,12 +43,13 @@ public class BookingController {
         return bookingService.save(createBookingDto);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or "
+            + " #userId == @securityUtil.loggedInUserId")
     @GetMapping("/search")
     @Operation(summary = "Search booking",
             description = "Search booking in system by user and status")
     public List<BookingDto> searchByUserIdAndStatus(
-            @RequestParam Long userId,
+            @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Booking.BookingStatus[] statuses,
             @ParameterObject Pageable pageable) {
         return bookingService.findByUserIdAndStatus(pageable, userId, statuses);

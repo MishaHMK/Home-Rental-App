@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -30,10 +30,10 @@ public class Booking {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime checkinDate;
+    private LocalDate checkinDate;
 
     @Column(nullable = false)
-    private LocalDateTime checkoutDate;
+    private LocalDate checkoutDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "accommodation_id", nullable = false)

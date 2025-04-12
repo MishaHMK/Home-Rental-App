@@ -1,5 +1,7 @@
 package rental.project.repository.booking;
 
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +12,7 @@ public interface BookingsRepository
         extends JpaRepository<Booking, Long> {
     @Query("SELECT b FROM Booking b "
             + "JOIN b.user u "
-            + "WHERE u.id = :userId "
+            + "WHERE :userId IS NULL OR u.id = :userId "
             + "AND (:statuses IS NULL "
             + "OR b.status IN :statuses)")
     Page<Booking> findByUserIdAndStatus(Long userId,
@@ -21,4 +23,13 @@ public interface BookingsRepository
             + "JOIN b.user u "
             + "WHERE u.id = :userId")
     Page<Booking> findByUserId(Long userId, Pageable pageable);
+
+    @Query("SELECT b FROM Booking b "
+            + "JOIN b.accommodation a "
+            + "WHERE a.id = :accommodationId "
+            + "AND b.checkinDate <= :second "
+            + "AND b.checkoutDate >= :first ")
+    List<Booking> findByDateRange(Long accommodationId,
+                                  LocalDate first,
+                                  LocalDate second);
 }
