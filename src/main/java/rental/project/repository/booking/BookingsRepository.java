@@ -32,4 +32,8 @@ public interface BookingsRepository
     List<Booking> findByDateRange(Long accommodationId,
                                   LocalDate first,
                                   LocalDate second);
+
+    @Query("SELECT b FROM Booking b "
+            + "WHERE b.checkoutDate < :date")
+    List<Booking> findAfterDate(LocalDate date);
 }
