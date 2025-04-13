@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rental.project.dto.booking.BookingDto;
@@ -98,6 +99,16 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getBookingById(bookingId);
         bookingMapper.updateFromDto(updateDto, booking);
         return bookingMapper.toDto(bookingsRepository.save(booking));
+    }
+
+    @Scheduled(cron = "0 0 8 * * ?")
+    public void markExpiredBookings() {
+        List<Booking> afterDate = bookingsRepository.findAfterDate(LocalDate.now());
+        for (Booking booking : afterDate) {
+            booking.setStatus(Booking.BookingStatus.EXPIRED);
+        }
+        bookingsRepository.saveAll(afterDate);
+        //ADD TELEGRAM NOTIFICATIONS LATER
     }
 
     private boolean checkAccess(User user, Booking booking) {
