@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-bookings-table
-      author: bookstore
+      author: MishaHMK
       changes:
         - createTable:
             tableName: bookings
@@ -35,7 +35,13 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status
-                  type: varchar(255)
+                  type: enum('PENDING', 'CONFIRMED', 'CANCELED', 'EXPIRED')
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
                   constraints:
                     nullable: false
 

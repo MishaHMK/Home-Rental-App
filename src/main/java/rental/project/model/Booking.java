@@ -21,8 +21,9 @@ import org.hibernate.annotations.SQLDelete;
 @Getter
 @Setter
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE bookings "
-        + "SET status = 'CANCELED' WHERE id = ?")
+@SQLDelete(sql = "UPDATE payments "
+        + "SET is_deleted = true "
+        + "WHERE id = ?")
 @Table(name = "bookings")
 public class Booking {
     @Id
@@ -46,6 +47,9 @@ public class Booking {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean isDeleted = false;
 
     public enum BookingStatus {
         PENDING,

@@ -1,7 +1,10 @@
 package rental.project.service.booking;
 
 import jakarta.persistence.EntityNotFoundException;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import rental.project.dto.booking.BookingDto;
+import rental.project.dto.booking.BookingWithAccommodationInfoDto;
 import rental.project.dto.booking.CreateBookingDto;
 import rental.project.dto.booking.UpdateBookingDto;
 import rental.project.dto.booking.UpdateBookingStatusDto;
@@ -63,14 +67,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto getBookingDetailsById(Long bookingId) {
+    public BookingWithAccommodationInfoDto getBookingDetailsById(Long bookingId) {
         User loggedInUser = SecurityUtil.getLoggedInUser();
         Booking booking = getBookingById(bookingId);
         if (!booking.getUser().getId().equals(loggedInUser.getId())
                 && loggedInUser.getRole() != User.Role.ADMIN) {
             throw new AccessException("You can't access this booking data");
         }
-        return bookingMapper.toDto(booking);
+        return bookingMapper.toDetailedDto(booking);
     }
 
     @Override
@@ -99,6 +103,15 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getBookingById(bookingId);
         bookingMapper.updateFromDto(updateDto, booking);
         return bookingMapper.toDto(bookingsRepository.save(booking));
+    }
+
+    @Override
+    public BigDecimal countTotalAmount(Long bookingId) {
+        BookingWithAccommodationInfoDto bookingData = getBookingDetailsById(bookingId);
+        long dayDifference = ChronoUnit.DAYS.between(
+                bookingData.getCheckinDate(), bookingData.getCheckoutDate());
+        return bookingData.getAccommodation().getDailyRate()
+                .multiply(BigDecimal.valueOf(dayDifference));
     }
 
     @Scheduled(cron = "0 0 8 * * ?")
