@@ -1,11 +1,11 @@
 package rental.project.repository.payment;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import rental.project.model.Payment;
-import java.util.Optional;
 
 public interface PaymentsRepository extends JpaRepository<Payment, Long> {
     @Query("SELECT p FROM Payment p "

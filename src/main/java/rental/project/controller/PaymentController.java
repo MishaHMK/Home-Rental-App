@@ -2,6 +2,7 @@ package rental.project.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import rental.project.dto.payment.CreatePaymentDto;
 import rental.project.dto.payment.PaymentDto;
 import rental.project.service.payment.PaymentService;
-
-import java.util.List;
 
 @Tag(name = "Payment controller",
         description = "Payments management endpoint")

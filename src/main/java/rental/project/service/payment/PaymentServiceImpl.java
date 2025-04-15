@@ -4,14 +4,12 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.actuate.autoconfigure.endpoint.web.ServletEndpointManagementContextConfiguration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import rental.project.dto.booking.BookingWithAccommodationInfoDto;
@@ -29,15 +27,14 @@ import rental.project.stripe.StripeUtil;
 @Transactional
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
+    public static final String SESSION_COMPLETE_STATUS = "complete";
+    public static final String SESSION_OPEN_STATUS = "open";
+
     private final BookingService bookingService;
     private final StripeUtil stripeUtil;
     private final BookingMapper bookingMapper;
     private final PaymentMapper paymentMapper;
     private final PaymentsRepository paymentsRepository;
-
-    public static final String SESSION_COMPLETE_STATUS = "complete";
-    public static final String SESSION_OPEN_STATUS = "open";
-    private final ServletEndpointManagementContextConfiguration servletEndpointManagementContextConfiguration;
 
     @Override
     public List<PaymentDto> getAllByUserId(Pageable pageable, Long userId) {
@@ -63,13 +60,13 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentDto success(String sessionId) {
         try {
             Session session = stripeUtil.receiveSession(sessionId);
-            if (!session.getStatus().equals(SESSION_COMPLETE_STATUS)){
+            if (!session.getStatus().equals(SESSION_COMPLETE_STATUS)) {
                 throw new PaymentException("Payment with session id: " + sessionId
                         + " cancelled!");
             }
             Payment.PaymentStatus paidStatus = Payment.PaymentStatus.PAID;
             Payment payment = findBySessionId(sessionId);
-            if (payment.getStatus().equals(paidStatus)){
+            if (payment.getStatus().equals(paidStatus)) {
                 throw new PaymentException("Payment is already paid");
             }
             payment.setStatus(paidStatus);
@@ -84,7 +81,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentDto cancel(String sessionId) {
         try {
             Session session = stripeUtil.receiveSession(sessionId);
-            if (!session.getStatus().equals(SESSION_OPEN_STATUS)){
+            if (!session.getStatus().equals(SESSION_OPEN_STATUS)) {
                 throw new PaymentException("Payment with session id: " + sessionId
                         + " is not open!");
             }
@@ -100,7 +97,7 @@ public class PaymentServiceImpl implements PaymentService {
     private Payment findBySessionId(String sessionId) {
         return paymentsRepository.findBySessionId(sessionId)
                 .orElseThrow(
-                () -> new EntityNotFoundException("Payment with session id: "
+                    () -> new EntityNotFoundException("Payment with session id: "
                         + sessionId + " not found")
         );
     }
