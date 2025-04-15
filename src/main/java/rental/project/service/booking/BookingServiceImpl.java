@@ -19,9 +19,11 @@ import rental.project.exception.AccessException;
 import rental.project.mapper.BookingMapper;
 import rental.project.model.Accommodation;
 import rental.project.model.Booking;
+import rental.project.model.Payment;
 import rental.project.model.User;
 import rental.project.repository.accommodation.AccommodationRepository;
 import rental.project.repository.booking.BookingsRepository;
+import rental.project.repository.payment.PaymentsRepository;
 import rental.project.security.SecurityUtil;
 
 @Service
@@ -31,15 +33,21 @@ public class BookingServiceImpl implements BookingService {
     private final BookingsRepository bookingsRepository;
     private final AccommodationRepository accommodationRepository;
     private final BookingMapper bookingMapper;
+    private final PaymentsRepository paymentsRepository;
 
     @Override
     public BookingDto save(CreateBookingDto createBookingDto) {
+        Long loggedInUserId = SecurityUtil.getLoggedInUserId();
+        if (!paymentsRepository.findAllByStatus(
+                Payment.PaymentStatus.PENDING, loggedInUserId).isEmpty()) {
+            throw new AccessException("You have already pending payment to pay first");
+        }
         Accommodation accommodation = getAccommodationById(
                 createBookingDto.getAccommodationId());
         if (checkAccommodationAvailability(accommodation, createBookingDto)) {
             throw new AccessException("This accommodation is not available.");
         }
-        createBookingDto.setUserId(SecurityUtil.getLoggedInUserId());
+        createBookingDto.setUserId(loggedInUserId);
         createBookingDto.setStatus("PENDING");
         Booking booking = bookingMapper.toEntity(createBookingDto);
         return bookingMapper.toDto(bookingsRepository.save(booking));

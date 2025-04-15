@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import rental.project.dto.booking.BookingWithAccommodationInfoDto;
 import rental.project.dto.payment.CreatePaymentDto;
@@ -29,6 +30,7 @@ import rental.project.stripe.StripeUtil;
 public class PaymentServiceImpl implements PaymentService {
     public static final String SESSION_COMPLETE_STATUS = "complete";
     public static final String SESSION_OPEN_STATUS = "open";
+    public static final String SESSION_EXPIRED_STATUS = "expired";
 
     private final BookingService bookingService;
     private final StripeUtil stripeUtil;
@@ -59,17 +61,16 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDto success(String sessionId) {
         try {
+            Payment payment = findBySessionId(sessionId);
+            if (payment.getStatus().equals(Payment.PaymentStatus.CANCELED)) {
+                throw new PaymentException("Payment is already cancelled");
+            }
             Session session = stripeUtil.receiveSession(sessionId);
             if (!session.getStatus().equals(SESSION_COMPLETE_STATUS)) {
                 throw new PaymentException("Payment with session id: " + sessionId
-                        + " cancelled!");
+                        + " is not paid");
             }
-            Payment.PaymentStatus paidStatus = Payment.PaymentStatus.PAID;
-            Payment payment = findBySessionId(sessionId);
-            if (payment.getStatus().equals(paidStatus)) {
-                throw new PaymentException("Payment is already paid");
-            }
-            payment.setStatus(paidStatus);
+            payment.setStatus(Payment.PaymentStatus.PAID);
             PaymentDto dto = paymentMapper.toDto(payment);
             return dto;
         } catch (StripeException e) {
@@ -94,6 +95,23 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
+    @Override
+    public PaymentDto renew(Long paymentId) {
+        Payment paymentById = paymentsRepository.findById(paymentId)
+                .orElseThrow(() -> new PaymentException("Payment with id: "
+                        + paymentId + " not found"));
+
+        try {
+            Session newSession = newSession(paymentById.getAmount());
+            paymentById.setSessionId(newSession.getId())
+                    .setSessionUrl(new URL(newSession.getUrl()));
+        } catch (MalformedURLException e) {
+            throw new PaymentException("Url format is wrong");
+        }
+
+        return paymentMapper.toDto(paymentsRepository.save(paymentById));
+    }
+
     private Payment findBySessionId(String sessionId) {
         return paymentsRepository.findBySessionId(sessionId)
                 .orElseThrow(
@@ -102,13 +120,31 @@ public class PaymentServiceImpl implements PaymentService {
         );
     }
 
+    @Scheduled(cron = "0 * * * * *")
+    public void markExpiredPayments() {
+        List<Payment> paymentStream = paymentsRepository.findAllByStatus(
+                Payment.PaymentStatus.PENDING, null)
+                .stream()
+                .filter(p -> {
+                    try {
+                        Session session = stripeUtil.receiveSession(p.getSessionId());
+                        return session.getStatus().equals(SESSION_EXPIRED_STATUS);
+                    } catch (StripeException e) {
+                        return false;
+                    }
+                })
+                .peek(p -> p.setStatus(Payment.PaymentStatus.EXPIRED))
+                .toList();
+
+        paymentsRepository.saveAll(paymentStream);
+    }
+
     private PaymentDto createPayment(
             Long bookingId, BookingWithAccommodationInfoDto bookingData) {
         BigDecimal totalAmount = bookingService.countTotalAmount(bookingId);
         Payment payment = new Payment();
-
         try {
-            Session session = stripeUtil.createSession(totalAmount, "total amount");
+            Session session = newSession(totalAmount);
             payment.setBooking(bookingMapper.toEntity(bookingData))
                     .setAmount(totalAmount)
                     .setStatus(Payment.PaymentStatus.PENDING)
@@ -117,7 +153,15 @@ public class PaymentServiceImpl implements PaymentService {
 
             PaymentDto paymentDto = paymentMapper.toDto(paymentsRepository.save(payment));
             return paymentDto;
-        } catch (StripeException | MalformedURLException e) {
+        } catch (MalformedURLException e) {
+            throw new PaymentException("Url format is wrong");
+        }
+    }
+
+    private Session newSession(BigDecimal totalAmount) {
+        try {
+            return stripeUtil.createSession(totalAmount, "payment");
+        } catch (StripeException e) {
             throw new PaymentException("Can't create payment session");
         }
     }

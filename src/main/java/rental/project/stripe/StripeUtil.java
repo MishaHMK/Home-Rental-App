@@ -20,7 +20,7 @@ public class StripeUtil {
     @Value("${stripe.cancel.link}")
     private String cancelUrl;
 
-    public StripeUtil(@Value("${stripe.api.key}") String apiKey) {
+    public StripeUtil(@Value(value = "${api.key}") String apiKey) {
         Stripe.apiKey = apiKey;
     }
 
