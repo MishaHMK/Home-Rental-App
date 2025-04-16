@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import rental.project.dto.booking.BookingDto;
+import rental.project.dto.booking.BookingWithAccommodationInfoDto;
 import rental.project.dto.booking.CreateBookingDto;
 import rental.project.dto.booking.UpdateBookingDto;
 import rental.project.dto.booking.UpdateBookingStatusDto;
@@ -67,7 +68,7 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     @Operation(summary = "Get booking by id",
             description = "Get booking data by given id")
-    public BookingDto getAllMyBookings(@PathVariable Long bookingId) {
+    public BookingWithAccommodationInfoDto getBookingInfoById(@PathVariable Long bookingId) {
         return bookingService.getBookingDetailsById(bookingId);
     }
 

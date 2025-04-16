@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-users-table
-      author: bookstore
+      author: MishaHMK
       changes:
         - createTable:
             tableName: users
@@ -36,7 +36,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: role
-                  type: varchar(255)
+                  type: enum('CUSTOMER', 'ADMIN')
                   constraints:
                     nullable: false
               - column:

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-users-table
-      author: bookstore
+      author: MishaHMK
       changes:
         - createTable:
             tableName: accommodations
@@ -15,7 +15,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: type
-                  type: varchar(255)
+                  type: enum('HOUSE', 'APARTMENT', 'CONDO', 'VACATION_HOME')
                   constraints:
                     nullable: false
               - column:
@@ -55,7 +55,7 @@ databaseChangeLog:
                   type: varchar(1000)
               - column:
                   name: daily_rate
-                  type: decimal(38,2)
+                  type: decimal(11,2)
                   constraints:
                     nullable: false
               - column:

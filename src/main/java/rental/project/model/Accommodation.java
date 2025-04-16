@@ -23,7 +23,8 @@ import rental.project.model.embedded.Address;
 @Getter
 @Setter
 @Accessors(chain = true)
-@SQLDelete(sql = "UPDATE accommodations SET is_deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE accommodations "
+        + "SET is_deleted = true WHERE id = ?")
 @SQLRestriction(value = "is_deleted = false")
 @Table(name = "accommodations")
 public class Accommodation {
