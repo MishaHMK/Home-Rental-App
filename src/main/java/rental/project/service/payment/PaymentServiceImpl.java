@@ -22,6 +22,7 @@ import rental.project.mapper.PaymentMapper;
 import rental.project.model.Payment;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.service.booking.BookingService;
+import rental.project.service.notificaiton.NotificationService;
 import rental.project.stripe.StripeUtil;
 
 @Service
@@ -37,6 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final BookingMapper bookingMapper;
     private final PaymentMapper paymentMapper;
     private final PaymentsRepository paymentsRepository;
+    private final NotificationService notificationService;
 
     @Override
     public List<PaymentDto> getAllByUserId(Pageable pageable, Long userId) {
@@ -72,6 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
             payment.setStatus(Payment.PaymentStatus.PAID);
             PaymentDto dto = paymentMapper.toDto(payment);
+            notificationService.onSuccessfulPayment(dto);
             return dto;
         } catch (StripeException e) {
             throw new PaymentException("Can't find payment session");

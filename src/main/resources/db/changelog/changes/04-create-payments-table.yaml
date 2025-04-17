@@ -51,3 +51,4 @@ databaseChangeLog:
             constraintName: fk_payments_bookings
             referencedColumnNames: id
             referencedTableName: bookings
+            onDelete: CASCADE
