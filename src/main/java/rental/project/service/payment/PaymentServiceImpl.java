@@ -92,6 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
             Payment payment = findBySessionId(sessionId);
             payment.setStatus(Payment.PaymentStatus.CANCELED);
             PaymentDto dto = paymentMapper.toDto(payment);
+            notificationService.onCancelledPayment(dto);
             return dto;
         } catch (StripeException e) {
             throw new PaymentException("Can't find payment session");

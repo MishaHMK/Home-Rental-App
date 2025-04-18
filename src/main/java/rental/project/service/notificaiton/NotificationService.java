@@ -15,4 +15,6 @@ public interface NotificationService {
     void onBookingCancellation(BookingDto bookingDto);
 
     void onSuccessfulPayment(PaymentDto paymentDto);
+
+    void onCancelledPayment(PaymentDto paymentDto);
 }

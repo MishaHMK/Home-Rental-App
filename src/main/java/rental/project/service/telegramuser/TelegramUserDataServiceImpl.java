@@ -2,6 +2,7 @@ package rental.project.service.telegramuser;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rental.project.model.TelegramUser;
@@ -40,5 +41,10 @@ public class TelegramUserDataServiceImpl
                 .orElseThrow(() -> new EntityNotFoundException(
                         "There is no telegram user with userId: " + userId
                 ));
+    }
+
+    @Override
+    public Set<String> getTelegramUserChatIds() {
+        return telegramUserDataRepository.findAllTelegramChatIds();
     }
 }

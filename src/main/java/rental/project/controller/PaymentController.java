@@ -37,7 +37,6 @@ public class PaymentController {
         return paymentService.getAllByUserId(pageable, userId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping("/success")
     @Operation(summary = "Confirm payment",
             description = "Confirm payment with given session")
@@ -45,7 +44,6 @@ public class PaymentController {
         return paymentService.success(sessionId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping("/cancel")
     @Operation(summary = "Cancel payment",
             description = "Cancel payment with given session")
