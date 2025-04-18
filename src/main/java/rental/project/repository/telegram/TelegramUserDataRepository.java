@@ -2,8 +2,6 @@ package rental.project.repository.telegram;
 
 import java.util.Optional;
 import java.util.Set;
-
-import org.hibernate.annotations.processing.SQL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import rental.project.model.TelegramUser;

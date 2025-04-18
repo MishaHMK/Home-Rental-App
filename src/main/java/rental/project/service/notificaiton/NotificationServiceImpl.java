@@ -1,18 +1,15 @@
 package rental.project.service.notificaiton;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import rental.project.dto.accommodation.AccommodationDto;
 import rental.project.dto.booking.BookingDto;
 import rental.project.dto.payment.PaymentDto;
 import rental.project.model.Accommodation;
 import rental.project.model.TelegramUser;
-import rental.project.security.SecurityUtil;
 import rental.project.service.telegramuser.TelegramUserDataService;
 import rental.project.telegram.TelegramBot;
-
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

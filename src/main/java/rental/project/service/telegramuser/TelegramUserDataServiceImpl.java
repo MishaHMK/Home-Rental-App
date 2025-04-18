@@ -2,14 +2,13 @@ package rental.project.service.telegramuser;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rental.project.model.TelegramUser;
 import rental.project.model.User;
 import rental.project.repository.telegram.TelegramUserDataRepository;
 import rental.project.security.UserDetailsServiceImpl;
-
-import java.util.Set;
 
 @Service
 @Transactional
