@@ -53,7 +53,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(newMessage);
         } catch (TelegramApiException e) {
-            throw new TelegramBotMessageException("Couldn't send a message: " + messageText, e);
+            if (e.getMessage().contains("bot was blocked by the user")) {
+                System.out.println("Bot was blocked by the user. Chat ID: " + chatId);
+            }
+            else if (e.getMessage().contains("chat not found")) {
+                System.out.println("The chat was removed or the user deleted their account. Chat ID: " + chatId);
+            }
+            else {
+                throw new TelegramBotMessageException("Couldn't send a message: " + messageText, e);
+            }
         }
     }
 

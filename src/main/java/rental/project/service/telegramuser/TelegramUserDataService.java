@@ -1,5 +1,6 @@
 package rental.project.service.telegramuser;
 
+import java.util.Set;
 import rental.project.model.TelegramUser;
 
 public interface TelegramUserDataService {
@@ -8,4 +9,6 @@ public interface TelegramUserDataService {
     TelegramUser getTelegramUserByChatId(String chatId);
 
     TelegramUser getTelegramUserByUserId(Long userId);
+
+    Set<String> getTelegramUserChatIds();
 }

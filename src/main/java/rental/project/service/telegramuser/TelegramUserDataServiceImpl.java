@@ -9,6 +9,8 @@ import rental.project.model.User;
 import rental.project.repository.telegram.TelegramUserDataRepository;
 import rental.project.security.UserDetailsServiceImpl;
 
+import java.util.Set;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,5 +42,10 @@ public class TelegramUserDataServiceImpl
                 .orElseThrow(() -> new EntityNotFoundException(
                         "There is no telegram user with userId: " + userId
                 ));
+    }
+
+    @Override
+    public Set<String> getTelegramUserChatIds() {
+        return telegramUserDataRepository.findAllTelegramChatIds();
     }
 }

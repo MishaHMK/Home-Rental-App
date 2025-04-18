@@ -41,6 +41,8 @@ public class SecurityConfig {
                                         antMatcher("/auth/**"),
                                         antMatcher("/swagger-ui/**"),
                                         antMatcher("/v3/api-docs/**"),
+                                        antMatcher("/payments/success"),
+                                        antMatcher("/payments/cancel"),
                                         antMatcher(HttpMethod.GET, "/accommodations/**"))
                                 .permitAll()
                                 .anyRequest()

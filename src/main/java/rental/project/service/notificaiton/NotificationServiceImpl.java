@@ -12,12 +12,11 @@ import rental.project.security.SecurityUtil;
 import rental.project.service.telegramuser.TelegramUserDataService;
 import rental.project.telegram.TelegramBot;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-    @Value("${telegram.bot.system_id}")
-    private String systemChatId;
-
     private final TelegramBot telegramBot;
     private final TelegramUserDataService telegramUserDataService;
 
@@ -49,8 +48,8 @@ public class NotificationServiceImpl implements NotificationService {
                 .append("\t Street: ").append(accommodationDto.getAddressDto().getStreet())
                 .append(System.lineSeparator())
                 .append("<=====================================>");
-        Long loggedInUserId = SecurityUtil.getLoggedInUserId();
-        telegramBot.sendMessage(getChatIdOfUser(loggedInUserId), messageData.toString());
+
+        sendMessagesToAllBots(messageData.toString());
     }
 
     @Override
@@ -78,7 +77,8 @@ public class NotificationServiceImpl implements NotificationService {
                 .append("\t Street: ").append(accommodation.getAddress().getStreet())
                 .append(System.lineSeparator())
                 .append("<=====================================>");
-        telegramBot.sendMessage(systemChatId, messageData.toString());
+
+        sendMessagesToAllBots(messageData.toString());
     }
 
     @Override
@@ -102,8 +102,8 @@ public class NotificationServiceImpl implements NotificationService {
                 .append("\t User #").append(bookingDto.getUserId())
                 .append(System.lineSeparator())
                 .append("<=====================================>");
-        Long loggedInUserId = SecurityUtil.getLoggedInUserId();
-        telegramBot.sendMessage(getChatIdOfUser(loggedInUserId), messageData.toString());
+
+        sendMessagesToAllBots(messageData.toString());
     }
 
     @Override
@@ -126,8 +126,8 @@ public class NotificationServiceImpl implements NotificationService {
                 .append("\t User #").append(bookingDto.getUserId())
                 .append(System.lineSeparator())
                 .append("<=====================================>");
-        Long loggedInUserId = SecurityUtil.getLoggedInUserId();
-        telegramBot.sendMessage(getChatIdOfUser(loggedInUserId), messageData.toString());
+
+        sendMessagesToAllBots(messageData.toString());
     }
 
     @Override
@@ -157,12 +157,50 @@ public class NotificationServiceImpl implements NotificationService {
                 .append(System.lineSeparator())
                 .append(System.lineSeparator())
                 .append("<=====================================>");
-        Long loggedInUserId = SecurityUtil.getLoggedInUserId();
-        telegramBot.sendMessage(getChatIdOfUser(loggedInUserId), messageData.toString());
+
+        sendMessagesToAllBots(messageData.toString());
+    }
+
+    @Override
+    public void onCancelledPayment(PaymentDto paymentDto) {
+        StringBuilder messageData = new StringBuilder(
+                "Payment #").append(paymentDto.getId())
+                .append(" had been cancelled!")
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("<=====================================>")
+                .append(System.lineSeparator())
+                .append("\t Booking #").append(paymentDto.getBookingId())
+                .append(System.lineSeparator())
+                .append("\t Status: ").append(paymentDto.getStatus())
+                .append(System.lineSeparator())
+                .append("\t Total amount: $").append(paymentDto.getAmount())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("\t Session address: ")
+                .append(System.lineSeparator())
+                .append(paymentDto.getSessionUrl())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("\t Session id ")
+                .append(System.lineSeparator())
+                .append(paymentDto.getSessionId())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("<=====================================>");
+
+        sendMessagesToAllBots(messageData.toString());
     }
 
     private String getChatIdOfUser(Long userId) {
         TelegramUser telegramUser = telegramUserDataService.getTelegramUserByUserId(userId);
         return telegramUser == null ? null : telegramUser.getChatId();
+    }
+
+    private void sendMessagesToAllBots(String message) {
+        Set<String> telegramUserChatIds = telegramUserDataService.getTelegramUserChatIds();
+        for (String telegramUserChatId : telegramUserChatIds) {
+            telegramBot.sendMessage(telegramUserChatId, message);
+        }
     }
 }
