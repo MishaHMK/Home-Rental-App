@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-telegram-user-table
+      author: MishaHMK
+      changes:
+        - createTable:
+            tableName: telegram_users_data
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: chat_id
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: telegram_users_data
+            constraintName: fk_data_users
+            referencedColumnNames: id
+            referencedTableName: users
+            onDelete: CASCADE

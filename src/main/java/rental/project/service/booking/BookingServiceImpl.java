@@ -16,6 +16,7 @@ import rental.project.dto.booking.CreateBookingDto;
 import rental.project.dto.booking.UpdateBookingDto;
 import rental.project.dto.booking.UpdateBookingStatusDto;
 import rental.project.exception.AccessException;
+import rental.project.exception.BookingException;
 import rental.project.mapper.BookingMapper;
 import rental.project.model.Accommodation;
 import rental.project.model.Booking;
@@ -25,6 +26,7 @@ import rental.project.repository.accommodation.AccommodationRepository;
 import rental.project.repository.booking.BookingsRepository;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.security.SecurityUtil;
+import rental.project.service.notificaiton.NotificationService;
 
 @Service
 @Transactional
@@ -34,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     private final AccommodationRepository accommodationRepository;
     private final BookingMapper bookingMapper;
     private final PaymentsRepository paymentsRepository;
+    private final NotificationService notificationService;
 
     @Override
     public BookingDto save(CreateBookingDto createBookingDto) {
@@ -50,7 +53,9 @@ public class BookingServiceImpl implements BookingService {
         createBookingDto.setUserId(loggedInUserId);
         createBookingDto.setStatus("PENDING");
         Booking booking = bookingMapper.toEntity(createBookingDto);
-        return bookingMapper.toDto(bookingsRepository.save(booking));
+        BookingDto dto = bookingMapper.toDto(bookingsRepository.save(booking));
+        notificationService.onBookingCreation(dto);
+        return dto;
     }
 
     @Override
@@ -88,11 +93,17 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto setBookingStatusCancelled(Long bookingId) {
         User loggedInUser = SecurityUtil.getLoggedInUser();
         Booking booking = getBookingById(bookingId);
+        if (booking.getStatus().equals(Booking.BookingStatus.EXPIRED)) {
+            throw new BookingException("You can't cancel expired booking");
+        }
         if (!checkAccess(loggedInUser, booking)) {
             throw new AccessException("You can't access this booking");
         }
         booking.setStatus(Booking.BookingStatus.CANCELED);
-        return bookingMapper.toDto(bookingsRepository.save(booking));
+        BookingDto dto = bookingMapper.toDto(bookingsRepository.save(booking));
+        notificationService.onAccommodationRelease(booking.getAccommodation());
+        notificationService.onBookingCancellation(dto);
+        return dto;
     }
 
     @Override
@@ -121,14 +132,17 @@ public class BookingServiceImpl implements BookingService {
                 .multiply(BigDecimal.valueOf(dayDifference));
     }
 
-    @Scheduled(cron = "0 0 8 * * ?")
+    @Scheduled(cron = "0 12 18 * * ?")
     public void markExpiredBookings() {
-        List<Booking> afterDate = bookingsRepository.findAfterDate(LocalDate.now());
-        for (Booking booking : afterDate) {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        List<Booking> expired = bookingsRepository
+                .findBookBeforeDateByStatus(tomorrow,
+                        Booking.BookingStatus.PENDING);
+        for (Booking booking : expired) {
             booking.setStatus(Booking.BookingStatus.EXPIRED);
+            notificationService.onAccommodationRelease(booking.getAccommodation());
         }
-        bookingsRepository.saveAll(afterDate);
-        //ADD TELEGRAM NOTIFICATIONS LATER
+        bookingsRepository.saveAll(expired);
     }
 
     private boolean checkAccess(User user, Booking booking) {
