@@ -10,17 +10,21 @@ import rental.project.dto.accommodation.UpdateAccommodationDto;
 import rental.project.mapper.AccommodationMapper;
 import rental.project.model.Accommodation;
 import rental.project.repository.accommodation.AccommodationRepository;
+import rental.project.service.notificaiton.NotificationService;
 
 @Service
 @RequiredArgsConstructor
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationMapper accommodationMapper;
+    private final NotificationService notificationService;
 
     @Override
     public AccommodationDto save(CreateAccommodationDto createAccommodationDto) {
         Accommodation toCreate = accommodationMapper.toEntity(createAccommodationDto);
-        return accommodationMapper.toDto(accommodationRepository.save(toCreate));
+        AccommodationDto dto = accommodationMapper.toDto(accommodationRepository.save(toCreate));
+        notificationService.onAccommodationCreation(dto);
+        return dto;
     }
 
     @Override

@@ -34,6 +34,8 @@ public interface BookingsRepository
                                   LocalDate second);
 
     @Query("SELECT b FROM Booking b "
-            + "WHERE b.checkoutDate < :date")
-    List<Booking> findAfterDate(LocalDate date);
+            + "WHERE b.checkoutDate < :date "
+            + "AND b.status = :status")
+    List<Booking> findBookBeforeDateByStatus(LocalDate date,
+                                             Booking.BookingStatus status);
 }
