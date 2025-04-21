@@ -19,7 +19,9 @@ import rental.project.dto.payment.PaymentDto;
 import rental.project.exception.PaymentException;
 import rental.project.mapper.BookingMapper;
 import rental.project.mapper.PaymentMapper;
+import rental.project.model.Booking;
 import rental.project.model.Payment;
+import rental.project.repository.booking.BookingsRepository;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.service.booking.BookingService;
 import rental.project.service.notificaiton.NotificationService;
@@ -39,6 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final PaymentsRepository paymentsRepository;
     private final NotificationService notificationService;
+    private final BookingsRepository bookingsRepository;
 
     @Override
     public List<PaymentDto> getAllByUserId(Pageable pageable, Long userId) {
@@ -149,14 +152,15 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = new Payment();
         try {
             Session session = newSession(totalAmount);
-            payment.setBooking(bookingMapper.toEntity(bookingData))
+            Booking booking = bookingMapper.toEntity(bookingData);
+            booking.setStatus(Booking.BookingStatus.CONFIRMED);
+            bookingsRepository.save(booking);
+            payment.setBooking(booking)
                     .setAmount(totalAmount)
                     .setStatus(Payment.PaymentStatus.PENDING)
                     .setSessionId(session.getId())
                     .setSessionUrl(new URL(session.getUrl()));
-
-            PaymentDto paymentDto = paymentMapper.toDto(paymentsRepository.save(payment));
-            return paymentDto;
+            return paymentMapper.toDto(paymentsRepository.save(payment));
         } catch (MalformedURLException e) {
             throw new PaymentException("Url format is wrong");
         }

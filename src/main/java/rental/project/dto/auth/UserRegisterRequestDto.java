@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import rental.project.annotation.FieldMatch;
 
@@ -11,6 +12,7 @@ import rental.project.annotation.FieldMatch;
 @FieldMatch(first = "password", second = "confirmPassword",
         message = "Passwords must match")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Accessors(chain = true)
 public class UserRegisterRequestDto {
     @NotBlank(message = "Email is required")
     @Length(min = 8, max = 30,

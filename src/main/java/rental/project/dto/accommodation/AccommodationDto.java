@@ -2,8 +2,10 @@ package rental.project.dto.accommodation;
 
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class AccommodationDto {
     private Long id;
     private String type;
