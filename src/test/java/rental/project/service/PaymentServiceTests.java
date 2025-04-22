@@ -213,12 +213,11 @@ public class PaymentServiceTests {
                 .thenReturn(bookingDetailsById);
         when(bookingService.countTotalAmount(bookingId))
                 .thenReturn(totalAmount);
-
-        String sessionName = "payment";
         when(stripeUtil.createSession(any(BigDecimal.class), anyString()))
                  .thenThrow(new ApiException(null,
                          null, null, null, null
                  ));
+        String sessionName = "payment";
 
         //When (Act)
         PaymentException exception = assertThrows(PaymentException.class,
@@ -227,10 +226,10 @@ public class PaymentServiceTests {
         //Then (Assert)
         String expectedMessage = "Can't create payment session";
         assertEquals(expectedMessage, exception.getMessage());
+        verify(stripeUtil).createSession(totalAmount, sessionName);
         verify(paymentsRepository).findByBookingId(bookingId);
         verify(bookingService).getBookingDetailsById(bookingId);
         verify(bookingService).countTotalAmount(bookingId);
-        verify(stripeUtil).createSession(totalAmount, sessionName);
     }
 
     @Test
