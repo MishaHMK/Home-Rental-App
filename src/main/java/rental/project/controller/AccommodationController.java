@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +43,8 @@ public class AccommodationController {
     @GetMapping()
     @Operation(summary = "Get all accommodations",
             description = "Get all accommodations in system")
-    public List<AccommodationDto> getAllAccommodations() {
-        return accommodationService.findAll();
+    public List<AccommodationDto> getAllAccommodations(@ParameterObject Pageable pageable) {
+        return accommodationService.findAll(pageable);
     }
 
     @GetMapping("/{id}")

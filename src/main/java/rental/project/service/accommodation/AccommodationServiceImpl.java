@@ -1,12 +1,12 @@
 package rental.project.service.accommodation;
 
-import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rental.project.dto.accommodation.AccommodationDto;
 import rental.project.dto.accommodation.CreateAccommodationDto;
 import rental.project.dto.accommodation.UpdateAccommodationDto;
+import rental.project.exception.EntityNotFoundException;
 import rental.project.mapper.AccommodationMapper;
 import rental.project.model.Accommodation;
 import rental.project.repository.accommodation.AccommodationRepository;
@@ -28,8 +28,8 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public List<AccommodationDto> findAll() {
-        return accommodationRepository.findAll().stream()
+    public List<AccommodationDto> findAll(org.springframework.data.domain.Pageable pageable) {
+        return accommodationRepository.findAll(pageable).stream()
                 .map(accommodationMapper::toDto)
                 .toList();
     }
