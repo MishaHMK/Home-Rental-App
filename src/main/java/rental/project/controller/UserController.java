@@ -41,9 +41,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
-    @PutMapping("me")
+    @PutMapping("update")
     @Operation(summary = "Update user info",
-            description = "Receive currently logged in user profile info")
+            description = "Update currently logged in user profile info")
     public UserDto updateCurrentUserInfo(@RequestBody UpdateUserDataDto userDto) {
         return userService.updateUserData(userDto);
     }

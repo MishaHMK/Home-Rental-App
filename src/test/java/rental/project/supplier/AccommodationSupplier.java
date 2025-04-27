@@ -15,7 +15,7 @@ public class AccommodationSupplier {
                 .setStreet("Test Street, 22")
                 .setCity("Test City")
                 .setState("Test Region")
-                .setPostalCode("80000")
+                .setPostalCode("80001")
                 .setCountry("Test Country")
                 .setLatitude(50.0)
                 .setLongitude(15.0);
@@ -24,7 +24,7 @@ public class AccommodationSupplier {
                 .setStreet("Test Street, 52")
                 .setCity("Test City 2")
                 .setState("Test Region 2")
-                .setPostalCode("80001")
+                .setPostalCode("80002")
                 .setCountry("Test Country 2")
                 .setLatitude(18.5)
                 .setLongitude(14.32);
@@ -41,7 +41,7 @@ public class AccommodationSupplier {
 
         Accommodation secondAccommodation = new Accommodation()
                 .setId(2L)
-                .setType(Accommodation.AccommodationType.VACATION_HOME)
+                .setType(Accommodation.AccommodationType.HOUSE)
                 .setAddress(secondAddress)
                 .setSize("Test size info 2")
                 .setAmenities(new String[] {"amenity 1",
@@ -53,6 +53,59 @@ public class AccommodationSupplier {
                 .setId(3L)
                 .setType(Accommodation.AccommodationType.APARTMENT)
                 .setAddress(secondAddress)
+                .setSize("Test size info 3")
+                .setAmenities(new String[] {"amenity 1",
+                        "amenity 2", "amenity 3"})
+                .setDailyRate(BigDecimal.valueOf(49.99))
+                .setAvailability(3);
+
+        return List.of(firstAccommodation, secondAccommodation,
+                thirdAccommodation);
+    }
+
+    public static List<AccommodationDto> getAccommodationDtoList() {
+        AddressDto firstAddress = new AddressDto()
+                .setStreet("Test Street, 22")
+                .setCity("Test City")
+                .setState("Test Region")
+                .setPostalCode("80001")
+                .setCountry("Test Country")
+                .setLatitude(50.0)
+                .setLongitude(15.0);
+
+        AddressDto secondAddress = new AddressDto()
+                .setStreet("Test Street, 52")
+                .setCity("Test City 2")
+                .setState("Test Region 2")
+                .setPostalCode("80002")
+                .setCountry("Test Country 2")
+                .setLatitude(18.5)
+                .setLongitude(14.32);
+
+        AccommodationDto firstAccommodation = new AccommodationDto()
+                .setId(1L)
+                .setType("HOUSE")
+                .setAddressDto(firstAddress)
+                .setSize("Test size info")
+                .setAmenities(new String[] {"amenity 1",
+                        "amenity 2", "amenity 3"})
+                .setDailyRate(BigDecimal.valueOf(89.99))
+                .setAvailability(2);
+
+        AccommodationDto secondAccommodation = new AccommodationDto()
+                .setId(2L)
+                .setType("HOUSE")
+                .setAddressDto(secondAddress)
+                .setSize("Test size info 2")
+                .setAmenities(new String[] {"amenity 1",
+                        "amenity 2", "amenity 3"})
+                .setDailyRate(BigDecimal.valueOf(119.99))
+                .setAvailability(2);
+
+        AccommodationDto thirdAccommodation = new AccommodationDto()
+                .setId(3L)
+                .setType("APARTMENT")
+                .setAddressDto(secondAddress)
                 .setSize("Test size info 3")
                 .setAmenities(new String[] {"amenity 1",
                         "amenity 2", "amenity 3"})
@@ -115,6 +168,28 @@ public class AccommodationSupplier {
                 .setLongitude(15.0);
 
         return new AccommodationDto()
+                .setId(1L)
+                .setType("HOUSE")
+                .setAddressDto(addressDto)
+                .setSize("Test size info")
+                .setAmenities(new String[] {"amenity 1",
+                        "amenity 2", "amenity 3"})
+                .setDailyRate(BigDecimal.valueOf(89.99))
+                .setAvailability(2);
+    }
+
+    public static AccommodationDto getModifiedAccommodationDto() {
+        AddressDto addressDto = new AddressDto()
+                .setStreet("Test Street, 22")
+                .setCity("Test City")
+                .setState("Test Region")
+                .setPostalCode("80001")
+                .setCountry("Test Country")
+                .setLatitude(50.0)
+                .setLongitude(15.0);
+
+        return new AccommodationDto()
+                .setId(1L)
                 .setType("HOUSE")
                 .setAddressDto(addressDto)
                 .setSize("Test size info")
@@ -126,21 +201,42 @@ public class AccommodationSupplier {
 
     public static UpdateAccommodationDto getUpdateDto() {
         AddressDto addressDto = new AddressDto()
-                .setStreet("Test Street, 22")
-                .setCity("Test City")
-                .setState("Test Region")
-                .setPostalCode("80000")
-                .setCountry("Test Country")
-                .setLatitude(50.0)
-                .setLongitude(15.0);
+                .setStreet("Test Street, 52")
+                .setCity("Test City 2")
+                .setState("Test Region 2")
+                .setPostalCode("80002")
+                .setCountry("Test Country 2")
+                .setLatitude(18.5)
+                .setLongitude(14.32);
 
         return new UpdateAccommodationDto()
                 .setType("HOUSE")
                 .setAddressDto(addressDto)
-                .setSize("Test size info")
+                .setSize("Test size info 2")
                 .setAmenities(new String[] {"amenity 1",
                         "amenity 2", "amenity 3"})
-                .setDailyRate(BigDecimal.valueOf(89.99))
+                .setDailyRate(BigDecimal.valueOf(119.99))
+                .setAvailability(2);
+    }
+
+    public static AccommodationDto getUpdatedDto() {
+        AddressDto addressDto = new AddressDto()
+                .setStreet("Test Street, 52")
+                .setCity("Test City 2")
+                .setState("Test Region 2")
+                .setPostalCode("80002")
+                .setCountry("Test Country 2")
+                .setLatitude(18.5)
+                .setLongitude(14.32);
+
+        return new AccommodationDto()
+                .setId(2L)
+                .setType("HOUSE")
+                .setAddressDto(addressDto)
+                .setSize("Test size info 2")
+                .setAmenities(new String[] {"amenity 1",
+                        "amenity 2", "amenity 3"})
+                .setDailyRate(BigDecimal.valueOf(119.99))
                 .setAvailability(2);
     }
 }

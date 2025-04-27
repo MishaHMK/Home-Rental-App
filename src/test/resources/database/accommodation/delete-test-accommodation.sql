@@ -1,0 +1,1 @@
+DELETE FROM accommodations WHERE postal_code = '80000';

@@ -22,11 +22,11 @@ import rental.project.model.Accommodation;
 import rental.project.model.Booking;
 import rental.project.model.Payment;
 import rental.project.model.User;
+import rental.project.notification.NotificationService;
 import rental.project.repository.accommodation.AccommodationRepository;
 import rental.project.repository.booking.BookingsRepository;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.security.SecurityUtil;
-import rental.project.service.notificaiton.NotificationService;
 
 @Service
 @Transactional

@@ -32,10 +32,10 @@ import rental.project.mapper.BookingMapper;
 import rental.project.mapper.PaymentMapper;
 import rental.project.model.Booking;
 import rental.project.model.Payment;
+import rental.project.notification.NotificationService;
 import rental.project.repository.booking.BookingsRepository;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.service.booking.BookingService;
-import rental.project.service.notificaiton.NotificationService;
 import rental.project.service.payment.PaymentServiceImpl;
 import rental.project.stripe.StripeUtil;
 import rental.project.supplier.BookingSupplier;
@@ -107,7 +107,7 @@ public class PaymentServiceTests {
 
     @Test
     @DisplayName("Verify correct payment dto returned with new booking")
-    public void save_WithCorrectBooking_ThrowsException()
+    public void save_WithCorrectBooking_Returns()
             throws StripeException {
         //Given (Arrange)
         CreatePaymentDto createDto = PaymentSupplier.getCreatePaymentDto();
@@ -156,7 +156,7 @@ public class PaymentServiceTests {
 
     @Test
     @DisplayName("Verify correct payment dto returned with correct data")
-    public void save_WithWrongUrl_ThrowsException()
+    public void save_WithWrongUrl_ReturnsPaymentDto()
             throws StripeException {
         //Given (Arrange)
         CreatePaymentDto createDto = PaymentSupplier.getCreatePaymentDto();
@@ -413,7 +413,7 @@ public class PaymentServiceTests {
         Session session = PaymentSupplier.getSession();
         Payment payment = PaymentSupplier.getPayment();
         Long paymentId = payment.getId();
-        BigDecimal totalAmount = new BigDecimal("125.5");
+        BigDecimal totalAmount = new BigDecimal("125.55");
         PaymentDto paymentDto = PaymentSupplier.getPaymentDto();
 
         when(paymentsRepository.findById(paymentId))

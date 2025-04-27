@@ -21,10 +21,10 @@ import rental.project.mapper.BookingMapper;
 import rental.project.mapper.PaymentMapper;
 import rental.project.model.Booking;
 import rental.project.model.Payment;
+import rental.project.notification.NotificationService;
 import rental.project.repository.booking.BookingsRepository;
 import rental.project.repository.payment.PaymentsRepository;
 import rental.project.service.booking.BookingService;
-import rental.project.service.notificaiton.NotificationService;
 import rental.project.stripe.StripeUtil;
 
 @Service
@@ -107,11 +107,12 @@ public class PaymentServiceImpl implements PaymentService {
         Payment paymentById = paymentsRepository.findById(paymentId)
                 .orElseThrow(() -> new PaymentException("Payment with id: "
                         + paymentId + " not found"));
-
         try {
             Session newSession = newSession(paymentById.getAmount());
             paymentById.setSessionId(newSession.getId())
                     .setSessionUrl(new URL(newSession.getUrl()));
+            paymentById.setStatus(Payment.PaymentStatus.PENDING);
+            paymentsRepository.save(paymentById);
         } catch (MalformedURLException e) {
             throw new PaymentException("Url format is wrong");
         }
