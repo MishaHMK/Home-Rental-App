@@ -9,8 +9,8 @@ import rental.project.dto.accommodation.UpdateAccommodationDto;
 import rental.project.exception.EntityNotFoundException;
 import rental.project.mapper.AccommodationMapper;
 import rental.project.model.Accommodation;
+import rental.project.notification.NotificationService;
 import rental.project.repository.accommodation.AccommodationRepository;
-import rental.project.service.notificaiton.NotificationService;
 
 @Service
 @RequiredArgsConstructor

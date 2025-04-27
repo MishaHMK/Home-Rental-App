@@ -1,4 +1,4 @@
-package rental.project.service.notificaiton;
+package rental.project.notification;
 
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import rental.project.dto.accommodation.AccommodationDto;
 import rental.project.dto.booking.BookingDto;
 import rental.project.dto.payment.PaymentDto;
 import rental.project.model.Accommodation;
-import rental.project.model.TelegramUser;
 import rental.project.service.telegramuser.TelegramUserDataService;
 import rental.project.telegram.TelegramBot;
 
@@ -187,11 +186,6 @@ public class NotificationServiceImpl implements NotificationService {
                 .append("<=====================================>");
 
         sendMessagesToAllBots(messageData.toString());
-    }
-
-    private String getChatIdOfUser(Long userId) {
-        TelegramUser telegramUser = telegramUserDataService.getTelegramUserByUserId(userId);
-        return telegramUser == null ? null : telegramUser.getChatId();
     }
 
     private void sendMessagesToAllBots(String message) {

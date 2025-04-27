@@ -41,6 +41,16 @@ public class BookingSupplier {
                 .setStatus(BookingStatus.CANCELED);
     }
 
+    public static BookingDto getCancelledBookingDto() {
+        return new BookingDto()
+                .setId(4L)
+                .setCheckinDate(LocalDate.now())
+                .setCheckoutDate(LocalDate.now().plusDays(3))
+                .setAccommodationId(1L)
+                .setUserId(1L)
+                .setStatus("CANCELED");
+    }
+
     public static Booking getBookingOfCustomer() {
         return new Booking()
                 .setId(1L)
@@ -132,6 +142,19 @@ public class BookingSupplier {
                 .setStatus("PENDING");
     }
 
+    public static BookingWithAccommodationInfoDto
+            getModifiedBookingWithAccommodationInfoDto() {
+        return new BookingWithAccommodationInfoDto()
+                .setId(1L)
+                .setCheckinDate(LocalDate.now())
+                .setCheckoutDate(LocalDate.now().plusDays(3))
+                .setAccommodation(AccommodationSupplier
+                        .getModifiedAccommodationDto()
+                )
+                .setUserId(UserSupplier.getUser().getId())
+                .setStatus("PENDING");
+    }
+
     public static UpdateBookingStatusDto getUpdateBookingStatusDto() {
         return new UpdateBookingStatusDto()
                 .setStatus(BookingStatus.PENDING);
@@ -143,5 +166,24 @@ public class BookingSupplier {
                 .setCheckoutDate(LocalDate.now().plusDays(3))
                 .setAccommodationId(AccommodationSupplier
                         .getAccommodationDto().getId());
+    }
+
+    public static CreateBookingDto getNewBookingCreateDto() {
+        return new CreateBookingDto()
+                .setCheckinDate(LocalDate.now())
+                .setCheckoutDate(LocalDate.now().plusDays(4))
+                .setAccommodationId(2L)
+                .setUserId(1L)
+                .setStatus("PENDING");
+    }
+
+    public static BookingDto getCreatedBookingDto() {
+        return new BookingDto()
+                .setId(5L)
+                .setCheckinDate(LocalDate.now())
+                .setCheckoutDate(LocalDate.now().plusDays(4))
+                .setAccommodationId(2L)
+                .setUserId(1L)
+                .setStatus("PENDING");
     }
 }

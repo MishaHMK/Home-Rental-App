@@ -1,4 +1,4 @@
-package rental.project.service.notificaiton;
+package rental.project.notification;
 
 import rental.project.dto.accommodation.AccommodationDto;
 import rental.project.dto.booking.BookingDto;

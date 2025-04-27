@@ -32,6 +32,7 @@ public class AccommodationController {
     private final AccommodationService accommodationService;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     @Operation(summary = "Create accommodations",
             description = "Create new accommodation in system with provided data")

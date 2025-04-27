@@ -1,5 +1,7 @@
 package rental.project.supplier;
 
+import rental.project.dto.auth.UserLoginRequestDto;
+import rental.project.dto.auth.UserLoginResponseDto;
 import rental.project.dto.auth.UserRegisterRequestDto;
 import rental.project.dto.auth.UserRegisterResponseDto;
 import rental.project.dto.user.UpdateUserDataDto;
@@ -34,6 +36,29 @@ public class UserSupplier {
                 "Jane", "Doe", "ADMIN");
     }
 
+    public static UserDto getUpdatedUserDto() {
+        return new UserDto(3L, "janedor@gmail.com",
+                "Jane", "Doer", "ADMIN");
+    }
+
+    public static UserDto getNewUserDto() {
+        return new UserDto(3L, "janedor@gmail.com",
+                "Jane", "Doe", "ADMIN");
+    }
+
+    public static UserDto getAuthorizedDto() {
+        return new UserDto(3L, "janedoe@gmail.com",
+                "Jane", "Doe", "ADMIN");
+    }
+
+    public static UserLoginRequestDto getLoginRequestDto() {
+        return new UserLoginRequestDto("janedoe@gmail.com", "password");
+    }
+
+    public static UserLoginResponseDto getUserLoginResponseDto() {
+        return new UserLoginResponseDto("test_super_token");
+    }
+
     public static UserRegisterRequestDto getUserRegisterRequestDto() {
         return new UserRegisterRequestDto()
                 .setFirstName("Jane")
@@ -61,6 +86,15 @@ public class UserSupplier {
                 .setFirstName("Jane")
                 .setLastName("Doe")
                 .setEmail("janedoe@gmail.com")
+                .setPassword("password")
+                .setConfirmPassword("password");
+    }
+
+    public static UpdateUserDataDto getNewUpdateUserDataDto() {
+        return new UpdateUserDataDto()
+                .setFirstName("Jane")
+                .setLastName("Doer")
+                .setEmail("janedor@gmail.com")
                 .setPassword("password")
                 .setConfirmPassword("password");
     }

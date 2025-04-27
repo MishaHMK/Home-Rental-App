@@ -185,7 +185,6 @@ public class UserServiceTest {
     public void changeUserRole_WithValidData_ThrowsException() {
         //Given (Arrange)
         UpdateUserRoleDto roleDto = UserSupplier.getUpdateUserRoleDto();
-        User user = UserSupplier.getUser();
         Long invalidId = 3L;
 
         when(userRepository.findById(invalidId)).thenReturn(Optional.empty());
