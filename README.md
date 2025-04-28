@@ -62,7 +62,9 @@ Home Rental provides different operations:
 5. Open your terminal (cmd) and create MySQL user `mysql -u USER -p`.
 6. Create a database `CREATE DATABASE DB_NAME;`
 7. Add .env file in root folder of cloned project and write down a configuration:
+
 ![image](https://github.com/user-attachments/assets/3c40722e-94c5-47bb-9731-cafbdfd2004a)
+
 9. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
 10. Proceed to [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
