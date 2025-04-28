@@ -1,4 +1,4 @@
-## 🏚️: **Home Rental Project**
+## 🏚️: **Accommodation Rental Project**
 
 This is **Accommodation Rental API**, a spring-boot backend built for accommodation rental
 
@@ -70,10 +70,10 @@ Home Rental provides different operations:
 9. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
 10. Proceed to [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
-🔸 The project is also testable in deployed [Documentation](SOON) - TBA
+🔸 The project is also testable in deployed [Documentation](SOON) - IN PROGRESS
 
 ## :movie_camera: **Video Preview**
-TBA
+IN PROGRESS
 
 ## 🧪: **Testing results**
 More than 80% lines of code are covered with JUnit tests
