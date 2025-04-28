@@ -65,7 +65,7 @@ Home Rental provides different operations:
   ![image](https://github.com/user-attachments/assets/c8973069-6f6c-429b-ba80-44a534d198a9)
 )
 8. Add .env file in root folder of cloned project and write down a configuration:
-  ![image](![image](https://github.com/user-attachments/assets/456637e0-879b-43c4-9542-387ab84f85ae)
+  ![image](https://github.com/user-attachments/assets/3c40722e-94c5-47bb-9731-cafbdfd2004a)
 )
 9. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
 10. Proceed to [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
