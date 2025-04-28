@@ -37,7 +37,7 @@ Home Rental provides different operations:
 | Hibernate   | Bidirectional mapping tool between Java code and SQL database |
 | Liquibase   | Tool for database creation and version control             |
 
-**Data storage and access:**
+**External functional API:**
 | Tool        | Description                                                |
 |-------------|------------------------------------------------------------|
 | Telegram Bots | HTTP-based interface to build bots for Telegram          |
