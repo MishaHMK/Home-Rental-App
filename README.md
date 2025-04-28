@@ -73,7 +73,7 @@ Home Rental provides different operations:
 🔸 The project is also testable in deployed [Documentation](SOON) - IN PROGRESS
 
 ## :movie_camera: **Video Preview**
-IN PROGRESS
+https://www.loom.com/share/2aa05782c1404ab8a40fd4744d493328
 
 ## 🧪: **Testing results**
 More than 80% lines of code are covered with JUnit tests
