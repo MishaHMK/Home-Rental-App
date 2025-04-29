@@ -66,9 +66,9 @@ Home Rental provides different operations:
 ![image](https://github.com/user-attachments/assets/3c40722e-94c5-47bb-9731-cafbdfd2004a)
 
 9. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
-10. Proceed to [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
+10. Proceed to localy started [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
-🔸 The project is also testable in deployed [Documentation](SOON) - IN PROGRESS
+🔸 The project is also testable in deployed [Documentation](http://ec2-13-49-76-137.eu-north-1.compute.amazonaws.com/api/swagger-ui/index.html#)
 
 ## :movie_camera: **Video Preview**
 https://www.loom.com/share/2aa05782c1404ab8a40fd4744d493328
