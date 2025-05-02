@@ -64,9 +64,12 @@ Home Rental provides different operations:
 7. Add .env file in root folder of cloned project and write down a configuration:
 
 ![image](https://github.com/user-attachments/assets/3c40722e-94c5-47bb-9731-cafbdfd2004a)
-
-9. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
-10. Proceed to localy started [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
+8. Download and install [Docker](https://www.docker.com/) if you won't use Docker
+   put `spring.docker.compose.enabled=false`in src/main/resources/application.properties
+9. Check if all data in .env file is put and resources files in src/main and src/java are filled
+9. Open terminal (cmd) in root folder and do `docker-compose build` and 'docker-compose build'
+11. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
+12. Proceed to localy started [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
 🔸 The project is also testable in deployed [Documentation](http://ec2-13-49-76-137.eu-north-1.compute.amazonaws.com/api/swagger-ui/index.html#)
 
