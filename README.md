@@ -64,10 +64,11 @@ Home Rental provides different operations:
 7. Add .env file in root folder of cloned project and write down a configuration:
 
 ![image](https://github.com/user-attachments/assets/3c40722e-94c5-47bb-9731-cafbdfd2004a)
+
 8. Download and install [Docker](https://www.docker.com/) if you won't use Docker
-   put `spring.docker.compose.enabled=false`in src/main/resources/application.properties
+   put `spring.docker.compose.enabled=false` in src/main/resources/application.properties
 9. Check if all data in .env file is put and resources files in src/main and src/java are filled
-9. Open terminal (cmd) in root folder and do `docker-compose build` and 'docker-compose build'
+10. Open terminal (cmd) in root folder and do `docker-compose build` and 'docker-compose build'
 11. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
 12. Proceed to localy started [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
@@ -93,15 +94,16 @@ Some endpoints require a [role] for access, use JWT token (Bearer) or Basic auth
 - PATCH: `/users/{userId}/role` - update role of the selected user by his id.
 - GET: `/api/users/me` - receive currently logged in user info.
 
-**AccommodationController:** Handles requests for accommodations operations (Authorization is required).
+**AccommodationController:** Handles requests for accommodations operations (Authorization is required).  
+ 🔸 Allowed accomodation type values are: HOUSE, APARTMENT, CONDO, VACATION_HOME.
 - GET: `/api/accommodations` - Receive all accommodations.
 - GET: `/api/accommodations/{id}` - Receive a specific accommodation data by its ID.
 - POST: `/api/accommodations` - Create a new accommodation. [Admin]
 - PUT: `/api/accommodations/{id}` - Update accommodation data by its ID. [Admin]
 - DELETE: `/api/accommodations/{id}` - Soft delete accommodation. [Admin]
-🔸 Allowed accomodation type values are: HOUSE, APARTMENT, CONDO, VACATION_HOME
 
-**BookingController:** Handles requests for bookings operations (Authorization is required). 
+**BookingController:** Handles requests for bookings operations (Authorization is required).  
+🔸 Allowed booking type values are: PENDING, CONFIRMED, CANCELED, EXPIRED.
 - GET: `/api/bookings/my` - Receive all bookings of logged in user.
 - GET: `/api/bookings/{id}` - Search a specific booking by ID. [Admin/Customer owner]
 - GET: `/api/bookings/search` - Fiter booking by statuses or user id with optional pagination. [Admin]
@@ -109,12 +111,11 @@ Some endpoints require a [role] for access, use JWT token (Bearer) or Basic auth
 - PUT: `/api/bookings/{id}` - Update booking data. [Admin]
 - PUT: `/api/bookings/update-status/{id}` - Change booking status. [Admin]
 - DELETE: `/api/bookings/{id}` - Soft delete booking. [Admin]
-🔸 Allowed booking type values are: PENDING, CONFIRMED, CANCELED, EXPIRED
 
-**PaymentController:** Handles requests for order operations.
+**PaymentController:** Handles requests for order operations.  
+🔸 Allowed payment type values are: PENDING, PAID, CANCELED, EXPIRED
 - GET: `/api/payments` - Receive all user orders.
 - GET: `/api/payments/success` - Receive payment confirmation.
 - GET: `/api/payments/cancel` - Receive payment cancellation.
 - POST: `/api/payments` - Create new payment.
 - PATCH: `/api/payments/{id}` - Renew expired payment. [Admin]
-🔸 Allowed payment type values are: PENDING, PAID, CANCELED, EXPIRED
