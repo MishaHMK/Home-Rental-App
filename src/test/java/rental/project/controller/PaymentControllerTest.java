@@ -121,12 +121,33 @@ public class PaymentControllerTest {
     @Test
     @WithMockUser(username = "user", roles = {"ADMIN"})
     @DisplayName("Get all payments")
-    void getPaymentsByUserId_ValidId_ShouldReturnPaymentDtoList() throws Exception {
+    void getAllPayments_ShouldReturnPaymentDtoList() throws Exception {
         //Given (Arrange)
         List<PaymentDto> expected = PaymentSupplier.getPaymentDtoList();
 
         //When (Act)
         MvcResult result = mockMvc.perform(get("/payments")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        //Then (Assert)
+        PaymentDto[] actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), PaymentDto[].class);
+        assertNotNull(actual);
+        assertEquals(expected, Arrays.asList(actual));
+    }
+
+    @Test
+    @WithMockUser(username = "user", roles = {"ADMIN"})
+    @DisplayName("Get all user payments by user id")
+    void getPaymentsByUserId_ValidId_ShouldReturnPaymentDtoList() throws Exception {
+        //Given (Arrange)
+        List<PaymentDto> expected = PaymentSupplier.getPaymentDtoList();
+        Long userId = 1L;
+
+        //When (Act)
+        MvcResult result = mockMvc.perform(get("/payments/user/" + userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

@@ -88,9 +88,10 @@ public class UserControllerTest {
     void setupSecurityContext() {
         User customUser = new User();
         customUser.setId(3L);
-        customUser.setEmail("janedoe@gmail.com");
+        customUser.setEmail("janedom@gmail.com");
         customUser.setFirstName("Jane");
-        customUser.setLastName("Doe");
+        customUser.setLastName("Dom");
+        customUser.setPassword("password");
         customUser.setRole(User.Role.ADMIN);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(customUser,
@@ -125,7 +126,7 @@ public class UserControllerTest {
         //Given (Arrange)
         UpdateUserDataDto updateRequestDto = UserSupplier.getNewUpdateUserDataDto();
 
-        UserDto expected = UserSupplier.getUpdatedUserDto();
+        UserDto expected = UserSupplier.getNewUpdatedUserDto();
 
         String jsonRequest = objectMapper.writeValueAsString(updateRequestDto);
 
@@ -150,7 +151,7 @@ public class UserControllerTest {
     void updateUserRole_WithValidInput_ReturnsUpdatedUser() throws Exception {
         //Given (Arrange)
         UpdateUserRoleDto updateUserRoleDto = UserSupplier.getUpdateUserRoleDto();
-        UserDto expected = UserSupplier.getNewUserDto();
+        UserDto expected = UserSupplier.getNewUpdatedUserDto();
         Long userId = expected.id();
 
         String jsonRequest = objectMapper.writeValueAsString(updateUserRoleDto);

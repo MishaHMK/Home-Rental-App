@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.Set;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE users SET is_deleted = true,"
         + " password = 'REMOVED' WHERE id = ?")

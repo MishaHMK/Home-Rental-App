@@ -22,7 +22,7 @@ public interface PaymentsRepository extends JpaRepository<Payment, Long> {
 
     @Query("SELECT p FROM Payment p "
             + "JOIN p.booking b "
-            + "WHERE (:userId IS NULL OR b.user.id = :userId)")
+            + "WHERE b.user.id = :userId")
     Page<Payment> findAllByUserId(@Param("userId")Long userId, Pageable pageable);
 
     @Query("SELECT p FROM Payment p "

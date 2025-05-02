@@ -44,6 +44,14 @@ public class PaymentServiceImpl implements PaymentService {
     private final BookingsRepository bookingsRepository;
 
     @Override
+    public List<PaymentDto> getAll(Pageable pageable) {
+        return paymentsRepository.findAll()
+                .stream()
+                .map(paymentMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public List<PaymentDto> getAllByUserId(Pageable pageable, Long userId) {
         return paymentsRepository.findAllByUserId(userId, pageable)
                 .stream()

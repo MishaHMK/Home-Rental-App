@@ -2,12 +2,16 @@ package rental.project.model.embedded;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
-@Data
-@Accessors(chain = true)
 @Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
+@Accessors(chain = true)
 public class Address {
     @Column(nullable = false)
     private String street;

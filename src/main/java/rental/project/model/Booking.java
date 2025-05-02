@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.SQLDelete;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE payments "
         + "SET is_deleted = true "

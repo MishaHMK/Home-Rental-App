@@ -6,7 +6,6 @@ import java.util.Objects;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
-    
     private String firstField;
     private String secondField;
     

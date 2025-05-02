@@ -1,8 +1,6 @@
 package rental.project.telegram;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -11,19 +9,20 @@ import rental.project.exception.TelegramBotMessageException;
 import rental.project.repository.telegram.TelegramUserDataRepository;
 import rental.project.service.telegramuser.TelegramUserDataServiceImpl;
 
-@Component
 public class TelegramBot extends TelegramLongPollingBot {
-    @Value("${telegram.bot.name}")
-    private String botName;
+    private final String botName;
+    private final String botToken;
     private final TelegramUserDataServiceImpl telegramUserDataInfoService;
     private final TelegramUserDataRepository telegramUserDataRepository;
 
-    public TelegramBot(@Value("${telegram.bot.token}") String botToken,
-                       TelegramUserDataRepository repository,
-                       TelegramUserDataServiceImpl service) {
-        super(botToken);
-        this.telegramUserDataInfoService = service;
-        this.telegramUserDataRepository = repository;
+    public TelegramBot(String botToken,
+                         String botName,
+                         TelegramUserDataServiceImpl userDataService,
+                         TelegramUserDataRepository userDataRepository) {
+        this.botToken = botToken;
+        this.botName = botName;
+        this.telegramUserDataInfoService = userDataService;
+        this.telegramUserDataRepository = userDataRepository;
     }
 
     @Override
@@ -43,6 +42,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return botName;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
     }
 
     public void sendMessage(String chatId, String messageText) {

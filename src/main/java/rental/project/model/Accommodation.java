@@ -12,16 +12,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import rental.project.helper.StringArrayConverter;
 import rental.project.model.embedded.Address;
+import rental.project.utils.StringArrayConverter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE accommodations "
         + "SET is_deleted = true WHERE id = ?")
