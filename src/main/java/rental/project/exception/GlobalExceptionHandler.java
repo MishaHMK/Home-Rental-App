@@ -40,14 +40,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TelegramBotMessageException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessException(
+    public ResponseEntity<Map<String, Object>> handleTelegramBotMessageException(
             TelegramBotMessageException ex) {
         return new ResponseEntity<>(buildExceptionResponse(ex),
                 HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BookingException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessException(
+    public ResponseEntity<Map<String, Object>> handleBookingException(
             BookingException ex) {
         return new ResponseEntity<>(buildExceptionResponse(ex),
                 HttpStatus.CONFLICT);
