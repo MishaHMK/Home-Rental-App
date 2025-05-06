@@ -137,7 +137,6 @@ public class UserServiceTest {
         UserDto userDto = UserSupplier.getUserDto();
         UpdateUserDataDto updateUserDataDto = UserSupplier.getUpdateUserDataDto();
 
-        when(passwordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toUserDto(user)).thenReturn(userDto);
 
@@ -146,8 +145,6 @@ public class UserServiceTest {
 
         //Then (Assert)
         assertEquals(actualData, userDto);
-        verify(passwordEncoder, times(1))
-                .encode(user.getPassword());
         verify(userRepository, times(1))
                 .save(user);
         verify(userMapper, times(1))

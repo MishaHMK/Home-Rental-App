@@ -27,12 +27,21 @@ import rental.project.service.payment.PaymentService;
 public class PaymentController {
     private final PaymentService paymentService;
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping()
+    @Operation(summary = "Get all payments",
+            description = "Get all payments in system")
+    public List<PaymentDto> getAllPayments(@ParameterObject Pageable pageable) {
+        return paymentService.getAll(pageable);
+    }
+
     @PreAuthorize("hasRole('ADMIN') or "
             + " #userId == @securityUtil.loggedInUserId")
-    @GetMapping
-    @Operation(summary = "Get all payments",
-            description = "Get all payments by user")
-    public List<PaymentDto> getPaymentsByUserId(@RequestParam(required = false) Long userId,
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "Get payments of some user",
+            description = "Get payments by user by his id if authorized as that user,"
+                    + " or as ADMIN role user")
+    public List<PaymentDto> getPaymentsByUserId(@PathVariable Long userId,
                                                 @ParameterObject Pageable pageable) {
         return paymentService.getAllByUserId(pageable, userId);
     }

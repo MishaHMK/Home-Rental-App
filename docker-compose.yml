@@ -3,8 +3,7 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    env_file: ./.env
-    container_name: rentaldb
+    container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
@@ -12,17 +11,18 @@ services:
     ports:
       - "${MYSQLDB_DOCKER_PORT}:${MYSQLDB_LOCAL_PORT}"
 
-  springboot-app:
-    build: .
-    container_name: rental-app
+  app:
     depends_on:
       - mysql
+    image: accommodation-app
+    build: .
+    env_file: ./.env
     restart: on-failure
     ports:
       - "${SPRING_DOCKER_PORT}:${SPRING_LOCAL_PORT}"
       - "${DEBUG_PORT}:${DEBUG_PORT}"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://rentaldb:3306/${MYSQLDB_DATABASE}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQLDB_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${MYSQLDB_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
@@ -30,3 +30,4 @@ services:
       BOT_NAME: "$BOT_NAME"
       JWT_SECRET: "$JWT_SECRET"
       STRIPE_API_KEY: "$STRIPE_API_KEY"
+    command: ["sh", "-c", "wait-for-it.sh mysql:3306 -- java -jar /app.jar"]

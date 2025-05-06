@@ -1,6 +1,7 @@
 package rental.project.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import rental.project.repository.user.UserRepository;
 import rental.project.security.SecurityUtil;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -50,7 +52,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUserData(UpdateUserDataDto updateDto) {
-        updateDto.setPassword(passwordEncoder.encode(updateDto.getPassword()));
         User currentUser = SecurityUtil.getLoggedInUser();
         userMapper.updateFromDto(updateDto, currentUser);
         return userMapper.toUserDto(userRepository.save(currentUser));

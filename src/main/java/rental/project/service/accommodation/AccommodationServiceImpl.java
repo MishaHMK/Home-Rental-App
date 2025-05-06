@@ -1,5 +1,6 @@
 package rental.project.service.accommodation;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import rental.project.model.Accommodation;
 import rental.project.notification.NotificationService;
 import rental.project.repository.accommodation.AccommodationRepository;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AccommodationServiceImpl implements AccommodationService {

@@ -37,7 +37,7 @@ public class UserSupplier {
     }
 
     public static UserDto getUpdatedUserDto() {
-        return new UserDto(3L, "janedor@gmail.com",
+        return new UserDto(3L, "janedoe@gmail.com",
                 "Jane", "Doer", "ADMIN");
     }
 
@@ -47,8 +47,8 @@ public class UserSupplier {
     }
 
     public static UserDto getAuthorizedDto() {
-        return new UserDto(3L, "janedoe@gmail.com",
-                "Jane", "Doe", "ADMIN");
+        return new UserDto(3L, "janedom@gmail.com",
+                "Jane", "Dom", "ADMIN");
     }
 
     public static UserLoginRequestDto getLoginRequestDto() {
@@ -77,6 +77,11 @@ public class UserSupplier {
                 .setRole("ADMIN");
     }
 
+    public static UserDto getNewUpdatedUserDto() {
+        return new UserDto(3L, "janedom@gmail.com",
+                "Jane", "Dom", "ADMIN");
+    }
+
     public static UpdateUserRoleDto getUpdateUserRoleDto() {
         return new UpdateUserRoleDto().setRole(Role.ADMIN);
     }
@@ -84,18 +89,12 @@ public class UserSupplier {
     public static UpdateUserDataDto getUpdateUserDataDto() {
         return new UpdateUserDataDto()
                 .setFirstName("Jane")
-                .setLastName("Doe")
-                .setEmail("janedoe@gmail.com")
-                .setPassword("password")
-                .setConfirmPassword("password");
+                .setLastName("Doe");
     }
 
     public static UpdateUserDataDto getNewUpdateUserDataDto() {
         return new UpdateUserDataDto()
                 .setFirstName("Jane")
-                .setLastName("Doer")
-                .setEmail("janedor@gmail.com")
-                .setPassword("password")
-                .setConfirmPassword("password");
+                .setLastName("Dom");
     }
 }
