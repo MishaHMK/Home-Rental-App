@@ -68,7 +68,7 @@ Home Rental provides different operations:
 8. Download and install [Docker](https://www.docker.com/) if you won't use Docker
    put `spring.docker.compose.enabled=false` in src/main/resources/application.properties
 9. Check if all data in .env file is put and resources files in src/main and src/java are filled
-10. Open terminal (cmd) in root folder and do `docker-compose build` and 'docker-compose build'
+10. Open terminal (cmd) in root folder and do `docker-compose build` and `docker-compose up`
 11. Run project `mvn clean install` and then `java -jar target/HomeRentalApp-0.0.1-SNAPSHOT.jar`
 12. Proceed to localy started [Interactive Swagger Documentation](http://localhost:8080/api/swagger-ui/index.html)
 
